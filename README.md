@@ -8,7 +8,7 @@
 
 ### 基本功能1---时间戳功能
 
-![image-20241126113025045](img\image-time.png)
+![image-20241126113025045](img/image-time.png)
 
 我们首先在layout中的notelist_item.xml的列表项中添加新的TextView用来接受时间戳
 
@@ -74,7 +74,7 @@ int[] viewIDs = { android.R.id.text1,android.R.id.text2 };
 
 ### 基础功能2---搜索功能
 
-![image-20241201192242975](img\image-search.png)
+![image-20241201192242975](img/image-search.png)
 
 首先我们需要在menu/list_option_menu.xml文件中增加新的一个菜单项menu_search用来点击跳转搜索界面
 
@@ -288,9 +288,9 @@ case R.id.menu_search:
 
 ### 扩展功能1---UI美化
 
-![image-20241201195131897](img\image-UI1.png)
+![image-20241201195131897](img/image-UI1.png)
 
-![image-20241201230503306](img\image-search2.png)
+![image-20241201230503306](img/image-search2.png)
 
 首先进行最简单的UI美化，我们将NoteList界面与NoteSearch界面的主题更改为明亮主题
 
@@ -433,7 +433,7 @@ public class MyAdapter extends SimpleCursorAdapter {
 
 ```
 
-![image-20241201224515994](img\image-UI3.png)
+![image-20241201224515994](img/image-UI3.png)
 
 同时我们还要对编辑笔记界面NoteEditor.java中背景进行修改，我们首先也是在PROJECTION数组中加入背景颜色的查询。同时在onCreate方法中使用updateNoteBackgroundcolor函数来更新当前编辑页面的背景颜色。
 
@@ -516,7 +516,7 @@ private void updateNoteBackgroundColor() {
         );
 ```
 
-![image-20241201195244312](img\image-UI2.png)
+![image-20241201195244312](img/image-UI2.png)
 
 然后在edit_options_menu.xml中加入背景颜色修改的选项
 
@@ -705,7 +705,7 @@ public class NoteColor extends Activity {
 
 ### 扩展功能2---排序
 
-![image-20241201225457661](img\image-sort.png)
+![image-20241201225457661](img/image-sort.png)
 
 首先需要在list_options_menu.xml中添加新的一个选项menu_sort,并且有三个子菜单，按颜色排序、按创建时间排序、按更新时间排序。
 
@@ -778,11 +778,11 @@ public class NoteColor extends Activity {
     }
 ```
 
-![image-20241201230223827](img\image-sortbycolor.png)
+![image-20241201230223827](img/image-sortbycolor.png)
 
 这是按颜色排序的情况
 
-![image-20241201230355279](img\image-sortbycreate.png)
+![image-20241201230355279](img/image-sortbycreate.png)
 
 这是按创建时间排序的情况
 

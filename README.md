@@ -2,7 +2,19 @@
 
 # 期中实验---NotePad
 
-###### 项目简介：通过Android开发实现了谷歌开源项目NotePad的功能拓展，其中包括笔记时间戳，搜索，UI美化，排序功能。
+### 项目简介
+
+通过Android开发实现了谷歌开源项目NotePad的功能拓展，其中包括笔记时间戳，搜索，UI美化，排序功能。
+
+### 项目目标
+
+本项目的目标是开发一个轻量化、高效且功能实用的记事本应用，专注于提升用户在日常记录、管理笔记过程中的便捷性和效率。通过在原有谷歌开源项目NotePad的基础上进行功能扩展，旨在解决以下核心问题：
+
+1. **简化记录过程**：为用户提供一个快速、直观的笔记创建、编辑和删除功能，避免复杂的操作，确保用户能够迅速记录下重要信息。
+2. **高效笔记管理**：随着笔记数量的增加，提供便捷的检索和分类功能，帮助用户快速定位所需信息，提升管理效率。
+3. **优化用户体验**：通过美化界面和提供个性化主题选择，打造一个简洁而美观的应用界面，使用户在使用过程中既能享受清爽的视觉体验，也能感受到操作的流畅性。
+4. **增强可扩展性与可维护性**：采用模块化开发，确保各功能模块相互独立，易于维护和拓展，未来可根据用户需求进一步增加新功能或进行改进。
+5. **数据安全与稳定性**：使用SQLite数据库进行数据存储，确保笔记内容的安全性与稳定性，保证用户数据的持久性。
 
 ## 功能示例与核心代码说明
 
@@ -288,6 +300,14 @@ case R.id.menu_search:
 
 ### 扩展功能1---UI美化
 
+修改前：
+
+![image-20241205231725694](D:\AndroidStudioProjects\NotePad-master\img\image-UI1befor.png)
+
+![image-20241205231820555](D:\AndroidStudioProjects\NotePad-master\img\image-searchbefore.png)
+
+修改后：
+
 ![image-20241201195131897](img/image-UI1.png)
 
 ![image-20241201230503306](img/image-search2.png)
@@ -516,7 +536,9 @@ private void updateNoteBackgroundColor() {
         );
 ```
 
-![image-20241201195244312](img/image-UI2.png)
+
+
+![image-20241205231209417](D:\AndroidStudioProjects\NotePad-master\img\image-UI2)
 
 然后在edit_options_menu.xml中加入背景颜色修改的选项
 
@@ -546,8 +568,8 @@ private void updateNoteBackgroundColor() {
 我们还需要在layout中新建一个note_color.xml完成弹出窗口的布局。
 
 ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageButton
@@ -557,20 +579,6 @@ private void updateNoteBackgroundColor() {
         android:layout_weight="1"
         android:background="@color/colorWhite"
         android:onClick="white"/>
-    <ImageButton
-        android:id="@+id/color_yellow"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:background="@color/colorYellow"
-        android:onClick="yellow"/>
-    <ImageButton
-        android:id="@+id/color_blue"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:background="@color/colorBlue"
-        android:onClick="blue"/>
     <ImageButton
         android:id="@+id/color_green"
         android:layout_width="0dp"
@@ -585,7 +593,21 @@ private void updateNoteBackgroundColor() {
         android:layout_weight="1"
         android:background="@color/colorRed"
         android:onClick="red"/>
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/color_blue"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@color/colorBlue"
+        android:onClick="blue"/>
+    <ImageButton
+        android:id="@+id/color_yellow"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@color/colorYellow"
+        android:onClick="yellow"/>
+</LinearLayout>
 ```
 
 同时在values中新建color.xml用来添加颜色。

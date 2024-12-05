@@ -538,7 +538,7 @@ private void updateNoteBackgroundColor() {
 
 
 
-![image-20241205231209417](D:\AndroidStudioProjects\NotePad-master\img\image-UI2)
+![image-20241205231209417](img/image-UI2)
 
 然后在edit_options_menu.xml中加入背景颜色修改的选项
 

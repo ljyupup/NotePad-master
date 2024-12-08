@@ -15,6 +15,15 @@
  */
 
 package com.example.android.notepad;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.widget.Toast;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -72,6 +81,19 @@ public class NoteEditor extends Activity {
 
     // A label for the saved state of the activity
     private static final String ORIGINAL_CONTENT = "origContent";
+    private static final int REQUEST_WRITE_STORAGE = 112;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                exportNote();
+            } else {
+                Toast.makeText(this, "需要存储权限才能导出", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     // This Activity can be started by more than one action. Each action is represented
     // as a "state" constant
@@ -456,6 +478,19 @@ public class NoteEditor extends Activity {
         case R.id.menu_revert:
             cancelNote();
             break;
+        case R.id.menu_export:
+            // 请求存储权限（对于Android 6.0及以上）
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_STORAGE
+                );
+            } else {
+                exportNote();
+            }
+            break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -679,5 +714,44 @@ public class NoteEditor extends Activity {
             }
         }
     }
+    private void exportNote() {
+        // 获取笔记内容
+        String noteContent = mText.getText().toString();
+
+        // 获取笔记标题
+        String noteTitle = "";
+        if (mCursor != null && mCursor.moveToFirst()) {
+            int colTitleIndex = mCursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_TITLE);
+            noteTitle = mCursor.getString(colTitleIndex);
+        }
+
+        // 生成文件名
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = sdf.format(new Date());
+        String fileName = noteTitle + "_" + timestamp + ".txt";
+
+        try {
+            // 创建文件
+            File exportDir = new File(Environment.getExternalStorageDirectory(), "NotePadExports");
+            if (!exportDir.exists()) {
+                exportDir.mkdirs();
+            }
+            File file = new File(exportDir, fileName);
+
+            // 写入文件
+            FileWriter writer = new FileWriter(file);
+            writer.append(noteContent);
+            writer.flush();
+            writer.close();
+
+            // 通知用户导出成功
+            Toast.makeText(this, "笔记已导出至 " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "导出失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }

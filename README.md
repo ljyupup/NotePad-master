@@ -4,7 +4,7 @@
 
 ### 项目简介
 
-通过Android开发实现了谷歌开源项目NotePad的功能拓展，其中包括笔记时间戳，搜索，UI美化，排序功能。
+通过Android开发实现了谷歌开源项目NotePad的功能拓展，其中包括笔记时间戳，搜索，导出笔记，UI美化，排序功能。
 
 ### 项目目标
 
@@ -22,7 +22,7 @@
 
 ![image-20241126113025045](img/image-time.png)
 
-我们首先在layout中的notelist_item.xml的列表项中添加新的TextView用来接受时间戳
+我们首先在layout中的`notelist_item.xml`的列表项中添加新的TextView用来接受时间戳
 
 ```xml
 <TextView
@@ -35,13 +35,13 @@
     android:singleLine="true" />
 ```
 
-并且在NotePad.java中添加修改时间常量的定义
+并且在`NotePad.java`中添加修改时间常量的定义
 
 ```java
 public static final String COLUMN_NAME_MODIFICATION_DATE = "modified";
 ```
 
-然后我们需要在查询数组PROJECTION中添加修改时间的显示，并且在dataColumns数组中也加入修改时间的常量以及viewIDs中增加刚刚在noteslist_item.xml中增加的text2文本
+然后我们需要在查询数组`PROJECTION`中添加修改时间的显示，并且在`dataColumns`数组中也加入修改时间的常量以及`viewIDs`中增加刚刚在`noteslist_item.xml`中增加的text2文本
 
 ```java
 private static final String[] PROJECTION = new String[] {
@@ -88,7 +88,7 @@ int[] viewIDs = { android.R.id.text1,android.R.id.text2 };
 
 ![image-20241201192242975](img/image-search.png)
 
-首先我们需要在menu/list_option_menu.xml文件中增加新的一个菜单项menu_search用来点击跳转搜索界面
+首先我们需要在`menu/list_option_menu.xml`文件中增加新的一个菜单项`menu_search`用来点击跳转搜索界面
 
 ```xml
 <item
@@ -99,9 +99,9 @@ int[] viewIDs = { android.R.id.text1,android.R.id.text2 };
     android:showAsAction="always" />
 ```
 
-然后我们需要创建NoteSearch.java以及layout中创建note_search.xml用来完成搜索界面
+然后我们需要创建`NoteSearch.java`以及layout中创建`note_search.xml`用来完成搜索界面
 
-在note_search.xml中我加入了返回按钮，搜索输入框以及搜索结果的列表。
+在`note_search.xml`中我加入了返回按钮，搜索输入框以及搜索结果的列表。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -138,9 +138,9 @@ int[] viewIDs = { android.R.id.text1,android.R.id.text2 };
 public class NoteSearch extends Activity implements SearchView.OnQueryTextListener 
 ```
 
-在 onCreate 方法中，还初始化了 ListView 和 SearchView 控件。
+在 `onCreate` 方法中，还初始化了 `ListView` 和 `SearchView` 控件。
 获取 Intent，如果没有提供 URI，则设置默认 URI（NotePad.Notes.CONTENT_URI）。
-使用 NotePadProvider.DatabaseHelper 获取可读的数据库实例。
+使用 `NotePadProvider.DatabaseHelper` 获取可读的数据库实例。
 配置 SearchView，启用提交按钮、设置查询提示文本，并将当前活动作为监听器，以便处理用户输入。
 
 ```java
@@ -176,7 +176,7 @@ public class NoteSearch extends Activity implements SearchView.OnQueryTextListen
 
 ```
 
-onQueryTextSubmit 方法会在用户提交查询时触发，展示用户输入的查询内容（通过 Toast）。
+`onQueryTextSubmit` 方法会在用户提交查询时触发，展示用户输入的查询内容（通过 Toast）。
 
 ```java
 public boolean onQueryTextSubmit(String query) {
@@ -188,12 +188,12 @@ public boolean onQueryTextSubmit(String query) {
 
 ```
 
-onQueryTextChange 方法会在查询文本变化时触发。此方法用于构建 SQL 查询语句，通过 LIKE 操作符进行模糊匹配标题或笔记内容，查询符合条件的笔记记录。
+`onQueryTextChange` 方法会在查询文本变化时触发。此方法用于构建 SQL 查询语句，通过 LIKE 操作符进行模糊匹配标题或笔记内容，查询符合条件的笔记记录。
 使用 sqLiteDatabase.query 执行查询，并将返回的结果（Cursor）绑定到 ListView 上。
 查询结果包括笔记的标题、修改日期和内容等字段。
 
-ListView 的 OnItemClickListener 监听用户的点击操作，根据点击项的 ID 创建一个 URI。
-如果 Intent 的 action 是 ACTION_PICK 或 ACTION_GET_CONTENT，则返回选中的 URI 结果。
+ListView 的 `OnItemClickListener` 监听用户的点击操作，根据点击项的 ID 创建一个 URI。
+如果 Intent 的 action 是 `ACTION_PICK` 或 `ACTION_GET_CONTENT`，则返回选中的 URI 结果。
 否则启动编辑界面（Intent.ACTION_EDIT），并将选中的笔记 URI 传递给编辑界面。
 
 同时设定了Button 控件（返回按钮）绑定点击事件，点击时结束当前活动，返回到上一个界面。
@@ -279,7 +279,7 @@ public boolean onQueryTextChange(String newText) {
 }
 ```
 
-在完成以上操作后我们需要在NotesList.java中的onOptionsItemSelected 方法中添加点击查询按钮后的处理，跳转至NoteSearch界面。
+在完成以上操作后我们需要在`NotesList.java`中的`onOptionsItemSelected` 方法中添加点击查询按钮后的处理，跳转至`NoteSearch`界面。
 
 ```java
 case R.id.menu_search:
@@ -290,7 +290,7 @@ case R.id.menu_search:
             return true;
 ```
 
-最后最重要的是要在AndroidManifest.xml中声明一下NoteSearch页面，我们就完成了搜索界面。
+最后最重要的是要在`AndroidManifest.xml`中声明一下`NoteSearch`页面，我们就完成了搜索界面。
 
 ```xml
 <activity android:name="NoteSearch"
@@ -298,7 +298,144 @@ case R.id.menu_search:
     >
 ```
 
-### 扩展功能1---UI美化
+### 扩展功能1---导出笔记
+
+首先是权限申请
+
+![img-priviliage](img/img-priviliage.png)
+
+随后打开一个笔记点击菜单项中的export
+
+![img-priviliage](img/img-export4.png)
+
+![img-priviliage](img/img-export1.png)
+
+可以在sd卡中找到该文件
+
+![img-priviliage](img/img-export2.png)
+
+点击打开文件后可以看到内容
+
+![img-priviliage](img/img-export3.png)
+
+首先我们需要在`res/menu/editor_options_menu.xml`中添加导出笔记功能项
+
+```xml
+<item
+    android:id="@+id/menu_export"
+    android:title="export"
+    android:icon="@android:drawable/ic_menu_save"
+    android:showAsAction="ifRoom"/>
+
+```
+
+然后在`NoteEditor.java`中添加导出方法
+
+首先，它从某个文本视图（mText）中获取笔记的内容，并将其转换为字符串存储在 noteContent 变量中。
+接着，它尝试从数据库游标（mCursor）中获取笔记的标题。如果游标不为空且能移动到第一条记录，它会查找标题列（NotePad.Notes.COLUMN_NAME_TITLE）的索引，然后从该索引处获取标题字符串。如果没有找到标题，noteTitle 将保持为空字符串。
+生成文件名：使用 SimpleDateFormat 创建一个基于当前日期和时间的时间戳（格式为“yyyyMMdd_HHmmss”），然后将这个时间戳与笔记标题组合，形成文件的默认名。
+随后尝试在外部存储目录（Environment.getExternalStorageDirectory()）下创建一个名为 NotePadExports 的新目录（如果尚不存在）。
+然后，在这个目录下创建一个以之前生成的文件名为名的新文件。
+使用 FileWriter 打开这个文件，并将笔记内容写入其中。写入完成后，刷新并关闭 FileWriter。
+通知用户：如果文件成功创建并写入，它会通过显示一个 Toast 消息来通知用户笔记已导出，并显示文件的绝对路径。
+异常处理：如果在文件创建或写入过程中发生 IOException（例如，由于权限问题或磁盘空间不足），它会捕获这个异常，打印堆栈跟踪，并通过显示一个 Toast 消息来通知用户导出失败。
+
+```java
+private void exportNote() {
+    // 获取笔记内容
+    String noteContent = mText.getText().toString();
+    
+    // 获取笔记标题
+    String noteTitle = "";
+    if (mCursor != null && mCursor.moveToFirst()) {
+        int colTitleIndex = mCursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_TITLE);
+        noteTitle = mCursor.getString(colTitleIndex);
+    }
+
+    // 生成文件名
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    String timestamp = sdf.format(new Date());
+    String fileName = noteTitle + "_" + timestamp + ".txt";
+
+    try {
+        // 创建文件
+        File exportDir = new File(Environment.getExternalStorageDirectory(), "NotePadExports");
+        if (!exportDir.exists()) {
+            exportDir.mkdirs();
+        }
+        File file = new File(exportDir, fileName);
+
+        // 写入文件
+        FileWriter writer = new FileWriter(file);
+        writer.append(noteContent);
+        writer.flush();
+        writer.close();
+
+        // 通知用户导出成功
+        Toast.makeText(this, "笔记已导出至 " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+    } catch (IOException e) {
+        e.printStackTrace();
+        Toast.makeText(this, "导出失败", Toast.LENGTH_SHORT).show();
+    }
+}
+
+```
+
+随后在`onOptionsItemSelected` 方法中添加导出选项
+
+当用户选择菜单中的“导出”选项（menu_export）时，应用执行以下逻辑：
+应用首先检查是否已经获得了`WRITE_EXTERNAL_STORAGE`权限。
+如果没有获得权限，应用会请求该权限，显示权限请求对话框让用户选择。
+如果已经获得权限，应用直接调用exportNote()方法来导出笔记。
+
+```java
+case R.id.menu_export:
+    // 请求存储权限（对于Android 6.0及以上）
+    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) 
+            != PackageManager.PERMISSION_GRANTED) {
+        requestPermissions(
+            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 
+            REQUEST_WRITE_STORAGE
+        );
+    } else {
+        exportNote();
+    }
+    break;
+
+```
+
+同时在`NoteEditor.java`头部添加以下内容
+
+这段代码用于处理用户对写入外部存储权限请求的响应。如果用户授予了权限，应用会导出笔记；如果用户拒绝了权限，应用会通知用户需要该权限才能进行导出操作。
+
+```java
+private static final int REQUEST_WRITE_STORAGE = 112;
+
+@Override
+public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (requestCode == REQUEST_WRITE_STORAGE) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            exportNote();
+        } else {
+            Toast.makeText(this, "需要存储权限才能导出", Toast.LENGTH_SHORT).show();
+        }
+    }
+}
+
+```
+
+最后在`AndroidManifest.xml`中添加权限：
+
+```xml
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+```
+
+
+
+### 扩展功能2---UI美化
 
 修改前：
 
@@ -312,7 +449,7 @@ case R.id.menu_search:
 
 ![image-20241201230503306](img/image-search2.png)
 
-首先进行最简单的UI美化，我们将NoteList界面与NoteSearch界面的主题更改为明亮主题
+首先进行最简单的UI美化，我们将`NoteList`界面与`NoteSearch`界面的主题更改为明亮主题
 
 ```xml
         <activity android:name="NotesList" android:label="@string/title_notes_list"
@@ -322,7 +459,7 @@ case R.id.menu_search:
             >
 ```
 
-而后我们实现内容预览，首先要在notelist_item.xml中加入一个新的TextView用于接收笔记内容，同时要注意将字体改成暗淡的灰色，这样方便与标题区分开来。
+而后我们实现内容预览，首先要在`notelist_item.xml`中加入一个新的TextView用于接收笔记内容，同时要注意将字体改成暗淡的灰色，这样方便与标题区分开来。
 
 ```xml
     <TextView
@@ -337,7 +474,7 @@ case R.id.menu_search:
         android:textColor="#808080" />  <!-- 暗淡的灰色 -->
 ```
 
-然后我们要在NoteList中的PROJECTION数组中添加NotePad.Notes.COLUMN_NAME_NOTE，同时也要在dataColums中加入NotePad.Notes.COLUMN_NAME_NOTE，viewIDs中加入R.id.text3
+然后我们要在`NoteList`中的`PROJECTION`数组中添加`NotePad.Notes.COLUMN_NAME_NOTE`，同时也要在`dataColums`中加入`NotePad.Notes.COLUMN_NAME_NOTE`，`viewIDs`中加入`R.id.text3`
 
 ```java
     private static final String[] PROJECTION = new String[] {
@@ -352,7 +489,7 @@ case R.id.menu_search:
         int[] viewIDs = { android.R.id.text1,android.R.id.text2,R.id.text3 };
 ```
 
-同时在NoteSearch.java也要进行同样的操作，对搜索界面也进行优化
+同时在`NoteSearch.java`也要进行同样的操作，对搜索界面也进行优化
 
 当内容过多时就会自动用省略号来省略后续的内容，不会将整个笔记内容展示出来
 
@@ -360,7 +497,7 @@ case R.id.menu_search:
 
 随后我们再进行笔记条目背景颜色以及编辑界面背景颜色的优化
 
-我们首先要在NotePad.java中加入背景颜色字段的声明，以及五种背景颜色的说明，都用整数来表示更加方便
+我们首先要在`NotePad.java`中加入背景颜色字段的声明，以及五种背景颜色的说明，都用整数来表示更加方便
 
 ```java
         public static final String COLUMN_NAME_BACK_COLOR = "color";
@@ -371,7 +508,7 @@ case R.id.menu_search:
         public static final int RED_COLOR = 4; //red
 ```
 
-而后在NotePadProvider.java中的onCreate方法中加入这个背景颜色字段来在创建该表时有背景颜色列，在这个方法完成后要记得提前先删除一遍这个数据库，不然会显示没有color这个列，删除db文件的操作可自行搜索完成。
+而后在`NotePadProvider.java`中的`onCreate`方法中加入这个背景颜色字段来在创建该表时有背景颜色列，在这个方法完成后要记得提前先删除一遍这个数据库，不然会显示没有color这个列，删除db文件的操作可自行搜索完成。
 
 ```java
        public void onCreate(SQLiteDatabase db) {
@@ -386,14 +523,14 @@ case R.id.menu_search:
        }
 ```
 
-然后还是在NotePadProvider.java中的static中加入列名的映射
+然后还是在`NotePadProvider.java`中的`static`中加入列名的映射
 
 ```java
         sNotesProjectionMap.put(
                 NotePad.Notes.COLUMN_NAME_BACK_COLOR,NotePad.Notes.COLUMN_NAME_BACK_COLOR);
 ```
 
-同时在insert方法中加入判断确保每当插入新的笔记时，如果没有明确指定背景色，就为其设置一个默认的背景色。
+同时在`insert`方法中加入判断确保每当插入新的笔记时，如果没有明确指定背景色，就为其设置一个默认的背景色。
 
 ```
 if (values.containsKey(NotePad.Notes.COLUMN_NAME_BACK_COLOR) == false) {
@@ -402,7 +539,7 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_BACK_COLOR) == false) {
 
 ```
 
-重点的是我们定义了一个Myadapter类继承了SimpleCursorAdapter，重写了其中的bindView方法，用来修改每个条目的背景颜色
+重点的是我们定义了一个`Myadapter`类继承了`SimpleCursorAdapter`，重写了其中的`bindView`方法，用来修改每个条目的背景颜色
 
 ```java
 public class MyAdapter extends SimpleCursorAdapter {
@@ -455,7 +592,7 @@ public class MyAdapter extends SimpleCursorAdapter {
 
 ![image-20241201224515994](img/image-UI3.png)
 
-同时我们还要对编辑笔记界面NoteEditor.java中背景进行修改，我们首先也是在PROJECTION数组中加入背景颜色的查询。同时在onCreate方法中使用updateNoteBackgroundcolor函数来更新当前编辑页面的背景颜色。
+同时我们还要对编辑笔记界面`NoteEditor.java`中背景进行修改，我们首先也是在PROJECTION数组中加入背景颜色的查询。同时在`onCreate`方法中使用`updateNoteBackgroundcolor`函数来更新当前编辑页面的背景颜色。
 
 ```
     private static final String[] PROJECTION =
@@ -517,7 +654,7 @@ private void updateNoteBackgroundColor() {
     }
 ```
 
-随后我们需要在NoteList.java和NoteSearch.java中修改一下PROJECTION数组查询的内容，同时将SimpleCursorAdapter都修改成MyAdapter
+随后我们需要在`NoteList.java`和`NoteSearch.java`中修改一下PROJECTION数组查询的内容，同时将`SimpleCursorAdapter`都修改成`MyAdapter`
 
 ```java
     private static final String[] PROJECTION = new String[] {
@@ -540,7 +677,7 @@ private void updateNoteBackgroundColor() {
 
 ![image-20241205231209417](img/image-UI2.png)
 
-然后在edit_options_menu.xml中加入背景颜色修改的选项
+然后在`edit_options_menu.xml`中加入背景颜色修改的选项
 
 ```xml
     <item android:id="@+id/menu_color"
@@ -549,7 +686,7 @@ private void updateNoteBackgroundColor() {
         android:showAsAction="always"/>
 ```
 
-在NoteEditor.java中的onOptionsItemSelected 方法中switch中添加一个对更改颜色选项的处理，调用changeColor函数，我们再添加changeColor函数，用于弹出一个选择颜色的窗口。
+在`NoteEditor.java`中的`onOptionsItemSelected` 方法中switch中添加一个对更改颜色选项的处理，调用`changeColor`函数，我们再添加changeColor函数，用于弹出一个选择颜色的窗口。
 
 ```java
         case R.id.menu_color:
@@ -565,7 +702,7 @@ private void updateNoteBackgroundColor() {
     }
 ```
 
-我们还需要在layout中新建一个note_color.xml完成弹出窗口的布局。
+我们还需要在layout中新建一个`note_color.xml`完成弹出窗口的布局。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -610,7 +747,7 @@ private void updateNoteBackgroundColor() {
 </LinearLayout>
 ```
 
-同时在values中新建color.xml用来添加颜色。
+同时在values中新建`color.xml`用来添加颜色。
 
 ```xml
     <?xml version="1.0" encoding="utf-8"?>
@@ -623,7 +760,7 @@ private void updateNoteBackgroundColor() {
     </resources>
 ```
 
-同时，新建一个NoteColor.java用来完成弹出窗口，通过 onCreate 方法获取传入的笔记 URI，并查询当前笔记的背景色。选择不同的颜色后，背景色会更新并保存在数据库中。当 Activity 暂停时，通过 onPause 方法将选中的颜色保存到数据库。当选择颜色后，finish() 方法结束当前 Activity，返回到上一个界面。
+同时，新建一个`NoteColor.java`用来完成弹出窗口，通过 `onCreate` 方法获取传入的笔记 URI，并查询当前笔记的背景色。选择不同的颜色后，背景色会更新并保存在数据库中。当 Activity 暂停时，通过 `onPause` 方法将选中的颜色保存到数据库。当选择颜色后，`finish()` 方法结束当前 Activity，返回到上一个界面。
 
 ```java
 package com.example.android.notepad;
@@ -716,7 +853,7 @@ public class NoteColor extends Activity {
 
 ```
 
-最后我们需要在AndroidManifest.xml中声明一下NoteColor弹窗，提供一个浅色对话框样式的界面，用于更改笔记的背景颜色。我们也就完成了背景颜色修改的UI美化。
+最后我们需要在`AndroidManifest.xml`中声明一下`NoteColor`弹窗，提供一个浅色对话框样式的界面，用于更改笔记的背景颜色。我们也就完成了背景颜色修改的UI美化。
 
 ```xml
         <activity android:name="NoteColor"
@@ -725,11 +862,11 @@ public class NoteColor extends Activity {
             />
 ```
 
-### 扩展功能2---排序
+### 扩展功能3---排序
 
 ![image-20241201225457661](img/image-sort.png)
 
-首先需要在list_options_menu.xml中添加新的一个选项menu_sort,并且有三个子菜单，按颜色排序、按创建时间排序、按更新时间排序。
+首先需要在`list_options_menu.xml`中添加新的一个选项`menu_sort`,并且有三个子菜单，按颜色排序、按创建时间排序、按更新时间排序。
 
 ```xml
     <item
@@ -752,7 +889,7 @@ public class NoteColor extends Activity {
     </item>
 ```
 
-然后在NoteList.java中的onOptionsItemSelected中的switch选项中加入三种排序情况，用来更新不同的排序情况
+然后在`NoteList.java`中的`onOptionsItemSelected`中的switch选项中加入三种排序情况，用来更新不同的排序情况
 
 ```java
         case R.id.menu_sort_by_creation_date:
@@ -771,7 +908,7 @@ public class NoteColor extends Activity {
             return true;
 ```
 
-最后我们要在NoteList.java中加入新函数sortNotes，用来实时更新排序。
+最后我们要在`NoteList.java`中加入新函数`sortNotes`，用来实时更新排序。
 
 ```java
     private void sortNotes(String sortColumn) {

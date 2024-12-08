@@ -16,4 +16,10 @@
         android:title="@string/menu_color"
         android:icon="@drawable/ic_menu_edit"
         android:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_export"
+        android:title="export"
+        android:icon="@android:drawable/ic_menu_save"
+        android:showAsAction="ifRoom"/>
+
 </menu>

@@ -306,17 +306,17 @@ case R.id.menu_search:
 
 随后打开一个笔记点击菜单项中的export
 
-![img-priviliage](img/img-export4.png)
+![img-export4](img/img-export4.png)
 
-![img-priviliage](img/img-export1.png)
+![img-img-export1](img/img-export1.png)
 
 可以在sd卡中找到该文件
 
-![img-priviliage](img/img-export2.png)
+![img-img-export2](img/img-export2.png)
 
 点击打开文件后可以看到内容
 
-![img-priviliage](img/img-export3.png)
+![img-img-export3](img/img-export3.png)
 
 首先我们需要在`res/menu/editor_options_menu.xml`中添加导出笔记功能项
 
